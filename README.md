@@ -1,4 +1,3 @@
-artisologic.github.io
-=====================
+#artisologic.github.io
 
-My personal website
+My personal website on github pages.
