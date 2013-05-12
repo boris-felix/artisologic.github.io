@@ -1,0 +1,229 @@
+
+body {
+	font-family: "Lato", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+a {
+	color: inherit;
+}
+
+
+.main-header {
+	padding: 2em 1.25em 3em;
+
+	margin-bottom: 2em;
+
+	background-color: lighten($main-color, 3%);
+	color: #fff;
+	text-align: center;
+	text-shadow: 0 2px 0 $shadow-color;
+
+	@include tooltipIndicatorAtBottom(10px, 6px, lighten($main-color, 3%), after);
+
+	&::before {
+		content: "";
+
+		width:  100%;
+		height: 100%;
+		border-bottom-left-radius: 100%;
+
+		position: absolute;
+		left: 0;
+		top: 0;
+
+		background: $main-color;
+	}
+
+	@include from-width($tablet-portrait) {
+		@include prefixr(box-sizing, border-box);
+		width: 30%;
+		margin-bottom: 0;
+
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+
+		&::before {
+			border-bottom-left-radius: 0;
+			border-top-right-radius: 100%;
+		}
+	}
+	@include from-width($tablet-landscape) {
+		padding-top: 4em;
+	}
+}
+	.main-header__link {
+		display: block;
+		width:  150px;
+		height: 150px;
+
+		margin: 0 auto 1.5em;
+
+		background-color: darken($main-color, 30%);
+		background-image: url(http://gravatar.com/avatar/7f48ee3bb146ae3366c685f685d67fad?s=150);
+		background-position: center center;
+		background-repeat: no-repeat;
+
+		border: 5px solid #fff;
+		border-radius: 50%;
+		@include prefixr(box-shadow, "0 0 1px " + $shadow-color + ", 0 2px 0 " + $shadow-color);
+		text-indent: -9999px;
+
+		@include tooltipIndicatorAtBottom(6px, 6px, $shadow-color);
+		&::before { bottom: -7px; }
+
+		@include tooltipIndicatorAtBottom(6px, 6px, #fff, after);
+		&::after { bottom: -3px; }
+	}
+	.main-header__group {
+		position: relative;
+	}
+		.main-header__title {
+			margin-bottom: 0.5em;
+
+			font-size: 1.5em;
+			font-weight: 300;
+			line-height: 1em;
+			text-transform: uppercase;
+
+			strong {
+				display: block;
+
+				margin-bottom: 0.25em;
+
+				font-size: 1.25em;
+				font-weight: 900;
+			}
+		}
+		.main-header__subtitle {
+			max-width: 240px;
+			margin: 0 auto 1em;
+
+			font-size: 1em;
+			font-weight: 300;
+			line-height: 1.25em;
+		}
+	.main-header__social {
+		max-width: 240px;
+
+		margin: 0 auto;
+		position: relative;
+
+		line-height: 1.25em;
+	}
+
+
+.projects-category {
+	margin-bottom: 2em;
+
+	background-color: #fff;
+	color: darken($main-color, 30%);
+
+	@include from-width($tablet-portrait) {
+		margin-left: 2.5%;
+		margin-right: 30%;
+
+		font-size: 1.25em;
+	}
+
+	@include from-width($tablet-landscape) {
+		margin-left: 5%;
+
+		font-size: 1.35em;
+	}
+}
+.projects-category--client {
+	@include from-width($tablet-portrait) {
+		padding-top: 1em;
+	}
+	@include from-width($tablet-landscape) {
+		padding-top: 3em;
+	}
+}
+	.projects-category__title {
+		padding: 1em 0;
+		border-bottom: 1px solid $main-color;
+
+		position: relative;
+		margin-left: 5%;
+		margin-bottom: 1em;
+		z-index: 1;
+
+		font-size: 0.75em;
+		font-weight: 900;
+		text-transform: uppercase;
+	}
+
+	.project-list {
+		position: relative;
+		z-index: 0;
+
+		list-style: none;
+	}
+		.project-list__item {
+			border-bottom: 1px solid rgba($main-color, 0.1);
+		}
+			.project-list__item__link {
+				display: block;
+				padding: 3% 5%;
+
+				font-size: 1.25em;
+				font-weight: 300;
+				line-height: 1.25em;
+				text-decoration: none;
+				text-transform: uppercase;
+			}
+			a.project-list__item__link {
+				&::after {
+					content: "›";
+
+					float: right;
+					position: relative;
+					top: 2px;
+
+					color: $main-color;
+					opacity: 0.75;
+				}
+			}
+				.project__brand {
+					&::after {
+						content: " - ";
+
+						position: relative;
+						top: 2px;
+
+						color: $main-color;
+						opacity: 0.5;
+					}
+				}
+				.project__title { font-size: 0.6em; }
+
+
+.main-footer {
+	padding: 2em 5%;
+
+	margin-top: 4em;
+
+	background-color: #171717;
+	color: $main-color;
+
+	@include up-to-width($tablet-portrait - 1px) {
+		@include activeIndicatorAtTop(10px, 6px, #fff);
+	}
+
+	@include from-width($tablet-portrait) {
+		padding-left: 6%;
+
+		margin-right: 30%;
+	}
+
+	@include from-width($tablet-landscape) {
+		padding-left: 8.5%;
+	}
+
+	p {
+		font-size: 0.85em;
+		line-height: 1.25em;
+	}
+}

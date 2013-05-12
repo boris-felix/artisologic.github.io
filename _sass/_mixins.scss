@@ -1,0 +1,109 @@
+
+/**
+ * Prefixr
+ *
+ * Creates a cross browser version of any property/value.
+ */
+$default-prefixes: webkit moz ms o;
+@mixin prefixr($property, $value, $prefixes: $default-prefixes) {
+    @each $prefix in $prefixes {
+        -#{$prefix}-#{$property}: #{$value};
+    }
+    #{$property}: #{$value};
+}
+
+
+/**
+ * Triangle
+ *
+ * Creates any type of triangle.
+ */
+@mixin triangle($width, $height: $width, $direction: up, $color: red) {
+	width: 0;
+	height: 0;
+	border-left: $width solid transparent;
+	border-right: $width solid transparent;
+
+	$side: "";
+	@if($direction == up) {
+		$side: bottom;
+	} @else if($direction == down) {
+		$side: top;
+	}
+	border-#{$side}: $height solid $color;
+}
+
+
+
+/**
+ * UpToWidth
+ *
+ * Simple media query for max-width.
+ */
+@mixin up-to-width($width) {
+	@media all and (max-width: $width) {
+		@content;
+	}
+}
+
+
+/**
+ * UpToWidth
+ *
+ * Simple media query for min-width.
+ */
+@mixin from-width($width) {
+	@media all and (min-width: $width) {
+		@content;
+	}
+}
+
+
+/**
+ * Indicator
+ *
+ * Uses the triangle mixin in a pseudo element.
+ * Creates an indicator (active indicators, tooltip indicators, etc)
+ */
+@mixin indicator($width, $height: $width, $position: inside, $side: bottom, $color: red, $pseudo: before) {
+	position: relative;
+
+	&::#{$pseudo} {
+		content: "";
+
+		@if($position == inside) {
+			@if($side == top) {
+				@include triangle($width, $height, down, $color);
+			} @else if($side == bottom) {
+				@include triangle($width, $height, up, $color);
+			}
+		} @else if($position == outside) {
+			@if($side == top) {
+				@include triangle($width, $height, up, $color);
+			} @else if($side == bottom) {
+				@include triangle($width, $height, down, $color);
+			}
+		}
+
+		position: absolute;
+		#{$side}: 0;
+		left: 50%;
+		margin-left: -$width;
+
+		@if($position == outside) {
+			margin-#{$side}: -$height;
+		}
+	}
+}
+@mixin activeIndicatorAtBottom($width, $height: $width, $color: red, $pseudo: before) {
+	@include indicator($width, $height, inside, bottom, $color, $pseudo);
+}
+@mixin activeIndicatorAtTop($width, $height: $width, $color: red, $pseudo: before) {
+	@include indicator($width, $height, inside, top, $color, $pseudo);
+}
+@mixin tooltipIndicatorAtBottom($width, $height: $width, $color: red, $pseudo: before) {
+	@include indicator($width, $height, outside, bottom, $color, $pseudo);
+}
+@mixin tooltipIndicatorAtTop($width, $height: $width, $color: red, $pseudo: before) {
+	@include indicator($width, $height, outside, top, $color, $pseudo);
+}
