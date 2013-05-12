@@ -1,0 +1,18 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Benoît Grélard -- maker -- @benoitgrelard
+
+# THANKS
+
+    Ricardo Amorim -- for the videos on Vimeo :)
+
+# TECHNOLOGY COLOPHON
+
+    HTML5, CSS3
+    reset.css
+    Sass
+    Github Pages
+    Google Fonts

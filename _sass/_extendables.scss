@@ -1,13 +1,26 @@
 
 %clearfix {
-    zoom:1;
-    &:before, &:after {
-        content: "\0020";
-        display: block;
-        height: 0;
-        overflow: hidden;
-    }
-    &:after {
-        clear: both;
-    }
+	zoom:1;
+	&:before, &:after {
+		content: "\0020";
+		display: block;
+		height: 0;
+		overflow: hidden;
+	}
+	&:after {
+		clear: both;
+	}
+}
+
+%header-content-block {
+	max-width: 17em;
+	margin: 0 auto;
+
+	text-align: center;
+
+	@include between-widths($mobile-landscape, $tablet-portrait - 1px) {
+		margin-left: 150px + 35px;
+
+		text-align: left;
+	}
 }

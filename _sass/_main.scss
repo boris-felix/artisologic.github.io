@@ -1,21 +1,23 @@
 
 body {
 	font-family: "Lato", Helvetica, Arial, "Lucida Grande", sans-serif;
+	word-spacing: 0.1em;
 }
 
 a {
 	color: inherit;
+	text-decoration: none;
+	font-weight: 900;
 }
 
 
 .main-header {
-	padding: 2em 1.25em 3em;
+	padding: 2em 5% 3em;
 
 	margin-bottom: 2em;
 
 	background-color: lighten($main-color, 3%);
 	color: #fff;
-	text-align: center;
 	text-shadow: 0 2px 0 $shadow-color;
 
 	@include tooltipIndicatorAtBottom(10px, 6px, lighten($main-color, 3%), after);
@@ -36,7 +38,7 @@ a {
 
 	@include from-width($tablet-portrait) {
 		@include prefixr(box-sizing, border-box);
-		width: 30%;
+		width: $vertical-header-width;
 		margin-bottom: 0;
 
 		position: fixed;
@@ -75,8 +77,14 @@ a {
 
 		@include tooltipIndicatorAtBottom(6px, 6px, #fff, after);
 		&::after { bottom: -3px; }
+
+		@include between-widths($mobile-landscape, $tablet-portrait - 1px) {
+			float: left;
+		}
 	}
 	.main-header__group {
+		@extend %header-content-block;
+
 		position: relative;
 	}
 		.main-header__title {
@@ -97,17 +105,15 @@ a {
 			}
 		}
 		.main-header__subtitle {
-			max-width: 240px;
-			margin: 0 auto 1em;
+			margin-bottom: 1em;
 
 			font-size: 1em;
 			font-weight: 300;
 			line-height: 1.25em;
 		}
 	.main-header__social {
-		max-width: 240px;
+		@extend %header-content-block;
 
-		margin: 0 auto;
 		position: relative;
 
 		line-height: 1.25em;
@@ -120,9 +126,13 @@ a {
 	background-color: #fff;
 	color: darken($main-color, 30%);
 
+	@include from-width($mobile-landscape) {
+		font-size: 1.15em;
+	}
+
 	@include from-width($tablet-portrait) {
 		margin-left: 2.5%;
-		margin-right: 30%;
+		margin-right: $vertical-header-width;
 
 		font-size: 1.25em;
 	}
@@ -164,7 +174,7 @@ a {
 		.project-list__item {
 			border-bottom: 1px solid rgba($main-color, 0.1);
 		}
-			.project-list__item__link {
+			.project {
 				display: block;
 				padding: 3% 5%;
 
@@ -174,16 +184,14 @@ a {
 				text-decoration: none;
 				text-transform: uppercase;
 			}
-			a.project-list__item__link {
+			a.project {
 				&::after {
 					content: "›";
 
 					float: right;
-					position: relative;
-					top: 2px;
 
 					color: $main-color;
-					opacity: 0.75;
+					font-size: 1.25em;
 				}
 			}
 				.project__brand {
@@ -191,7 +199,7 @@ a {
 						content: " - ";
 
 						position: relative;
-						top: 2px;
+						top: 0.1em;
 
 						color: $main-color;
 						opacity: 0.5;
@@ -213,17 +221,15 @@ a {
 	}
 
 	@include from-width($tablet-portrait) {
-		padding-left: 6%;
-
-		margin-right: 30%;
+		margin-right: $vertical-header-width;
 	}
 
 	@include from-width($tablet-landscape) {
-		padding-left: 8.5%;
+		padding-left: 8%;
 	}
 
 	p {
 		font-size: 0.85em;
-		line-height: 1.25em;
+		line-height: 1.35em;
 	}
 }

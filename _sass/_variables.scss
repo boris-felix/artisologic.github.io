@@ -1,8 +1,27 @@
 
-$main-color: #1abc9c;
-$shadow-color: rgba(darken($main-color, 40%), 0.25);
-
+/**
+ * Responsive breakpoints
+ *
+ * Basic opinionated responsive breakpoints.
+ */
 $mobile-portrait: 320px;
 $mobile-landscape: 480px;
 $tablet-portrait: 768px;
 $tablet-landscape: 1024px;
+
+
+/**
+ * Colors
+ *
+ * Color variables.
+ */
+$main-color: #1abc9c;
+$shadow-color: rgba(darken($main-color, 40%), 0.25);
+
+
+/**
+ * Sizes
+ *
+ * A few size variables.
+ */
+$vertical-header-width: 40%;
