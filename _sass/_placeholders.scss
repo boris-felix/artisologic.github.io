@@ -1,8 +1,14 @@
 
+/**
+ * Clearfix placeholder
+ *
+ * To fix float clearing issues.
+ */
 %clearfix {
 	zoom:1;
 	&:before, &:after {
 		content: "\0020";
+
 		display: block;
 		height: 0;
 		overflow: hidden;
@@ -14,12 +20,13 @@
 
 %header-content-block {
 	max-width: 17em;
+
 	margin: 0 auto;
 
 	text-align: center;
 
-	@include between-widths($mobile-landscape, $tablet-portrait - 1px) {
-		margin-left: 150px + 35px;
+	@include between-widths($breakpoint-mobile-landscape, $breakpoint-tablet-portrait - 1px) {
+		margin-left: $width-photo + 35px;
 
 		text-align: left;
 	}

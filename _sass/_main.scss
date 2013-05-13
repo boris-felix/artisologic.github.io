@@ -1,6 +1,6 @@
 
 body {
-	font-family: "Lato", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-family: "Lato", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	word-spacing: 0.1em;
 }
 
@@ -10,18 +10,17 @@ a {
 	font-weight: 900;
 }
 
-
 .main-header {
 	padding: 2em 5% 3em;
 
+	position: relative;
 	margin-bottom: 2em;
 
-	background-color: lighten($main-color, 3%);
+	background-color: lighten($color-main, 3%);
 	color: #fff;
-	text-shadow: 0 2px 0 $shadow-color;
+	text-shadow: 0 2px 0 $color-shadow;
 
-	@include tooltipIndicatorAtBottom(10px, 6px, lighten($main-color, 3%), after);
-
+	// Add an extra circular background element
 	&::before {
 		content: "";
 
@@ -32,13 +31,18 @@ a {
 		position: absolute;
 		left: 0;
 		top: 0;
+		z-index: 0;
 
-		background: $main-color;
+		background: $color-main;
 	}
 
-	@include from-width($tablet-portrait) {
+	@include up-to-width($breakpoint-tablet-portrait) {
+		@include tooltipIndicatorAtBottom($width-section-indicator, $height-section-indicator, lighten($color-main, 3%), after);
+	}
+
+	@include from-width($breakpoint-tablet-portrait) {
 		@include prefixr(box-sizing, border-box);
-		width: $vertical-header-width;
+		width: $width-vertical-header;
 		margin-bottom: 0;
 
 		position: fixed;
@@ -46,47 +50,59 @@ a {
 		right: 0;
 		bottom: 0;
 
+		// Invert the radius curve
 		&::before {
 			border-bottom-left-radius: 0;
 			border-top-right-radius: 100%;
 		}
 	}
-	@include from-width($tablet-landscape) {
+	@include from-width($breakpoint-tablet-landscape) {
 		padding-top: 4em;
 	}
 }
+
 	.main-header__link {
 		display: block;
-		width:  150px;
-		height: 150px;
+		width:  $width-photo;
+		height: $height-photo;
 
 		margin: 0 auto 1.5em;
 
-		background-color: darken($main-color, 30%);
+		background-color: darken($color-main, 30%);
 		background-image: url(http://gravatar.com/avatar/7f48ee3bb146ae3366c685f685d67fad?s=150);
 		background-position: center center;
 		background-repeat: no-repeat;
 
+		@include retina {
+			background-image: url(http://gravatar.com/avatar/7f48ee3bb146ae3366c685f685d67fad?s=300);
+			background-size: $width-photo $height-photo;
+		}
+
 		border: 5px solid #fff;
 		border-radius: 50%;
-		@include prefixr(box-shadow, "0 0 1px " + $shadow-color + ", 0 2px 0 " + $shadow-color);
+		@include prefixr(box-shadow, "0 0 1px " + $color-shadow + ", 0 2px 0 " + $color-shadow);
 		text-indent: -9999px;
 
-		@include tooltipIndicatorAtBottom(6px, 6px, $shadow-color);
-		&::before { bottom: -7px; }
+		// Add the indicator at the bottom (with shadow)
+		@include tooltipIndicatorAtBottom($width-photo-indicator, $height-photo-indicator, $color-shadow) {
+			bottom: -7px;
+		}
+		@include tooltipIndicatorAtBottom($width-photo-indicator, $height-photo-indicator, #fff, after) {
+			bottom: -3px;
+		}
 
-		@include tooltipIndicatorAtBottom(6px, 6px, #fff, after);
-		&::after { bottom: -3px; }
-
-		@include between-widths($mobile-landscape, $tablet-portrait - 1px) {
+		@include between-widths($breakpoint-mobile-landscape, $breakpoint-tablet-portrait - 1px) {
 			float: left;
 		}
 	}
+
 	.main-header__group {
 		@extend %header-content-block;
 
+		// Bring out the element over the parent's pseudo element
 		position: relative;
 	}
+
 		.main-header__title {
 			margin-bottom: 0.5em;
 
@@ -104,6 +120,7 @@ a {
 				font-weight: 900;
 			}
 		}
+
 		.main-header__subtitle {
 			margin-bottom: 1em;
 
@@ -111,54 +128,55 @@ a {
 			font-weight: 300;
 			line-height: 1.25em;
 		}
+
 	.main-header__social {
 		@extend %header-content-block;
 
+		// Bring out the element over the parent's pseudo element
 		position: relative;
 
 		line-height: 1.25em;
 	}
 
-
 .projects-category {
 	margin-bottom: 2em;
 
 	background-color: #fff;
-	color: darken($main-color, 30%);
+	color: darken($color-main, 30%);
 
-	@include from-width($mobile-landscape) {
+	@include from-width($breakpoint-mobile-landscape) {
 		font-size: 1.15em;
 	}
 
-	@include from-width($tablet-portrait) {
+	@include from-width($breakpoint-tablet-portrait) {
 		margin-left: 2.5%;
-		margin-right: $vertical-header-width;
+		margin-right: $width-vertical-header;
 
 		font-size: 1.25em;
 	}
 
-	@include from-width($tablet-landscape) {
+	@include from-width($breakpoint-tablet-landscape) {
 		margin-left: 5%;
 
 		font-size: 1.35em;
 	}
-}
-.projects-category--client {
-	@include from-width($tablet-portrait) {
-		padding-top: 1em;
+
+	&.projects-category--client {
+		@include from-width($breakpoint-tablet-portrait) {
+			padding-top: 1em;
+		}
+		@include from-width($breakpoint-tablet-landscape) {
+			padding-top: 3em;
+		}
 	}
-	@include from-width($tablet-landscape) {
-		padding-top: 3em;
-	}
 }
+
 	.projects-category__title {
 		padding: 1em 0;
-		border-bottom: 1px solid $main-color;
+		border-bottom: 1px solid $color-main;
 
-		position: relative;
 		margin-left: 5%;
 		margin-bottom: 1em;
-		z-index: 1;
 
 		font-size: 0.75em;
 		font-weight: 900;
@@ -166,14 +184,13 @@ a {
 	}
 
 	.project-list {
-		position: relative;
-		z-index: 0;
-
 		list-style: none;
 	}
+
 		.project-list__item {
-			border-bottom: 1px solid rgba($main-color, 0.1);
+			border-bottom: 1px solid rgba($color-main, 0.1);
 		}
+
 			.project {
 				display: block;
 				padding: 3% 5%;
@@ -184,16 +201,18 @@ a {
 				text-decoration: none;
 				text-transform: uppercase;
 			}
+
 			a.project {
 				&::after {
 					content: "›";
 
 					float: right;
 
-					color: $main-color;
+					color: $color-main;
 					font-size: 1.25em;
 				}
 			}
+
 				.project__brand {
 					&::after {
 						content: " - ";
@@ -201,12 +220,12 @@ a {
 						position: relative;
 						top: 0.1em;
 
-						color: $main-color;
+						color: $color-main;
 						opacity: 0.5;
 					}
 				}
-				.project__title { font-size: 0.6em; }
 
+				.project__title { font-size: 0.6em; }
 
 .main-footer {
 	padding: 2em 5%;
@@ -214,22 +233,22 @@ a {
 	margin-top: 4em;
 
 	background-color: #171717;
-	color: $main-color;
+	color: $color-main;
 
-	@include up-to-width($tablet-portrait - 1px) {
-		@include activeIndicatorAtTop(10px, 6px, #fff);
+	@include up-to-width($breakpoint-tablet-portrait - 1px) {
+		@include activeIndicatorAtTop($width-section-indicator, $height-section-indicator, #fff);
 	}
 
-	@include from-width($tablet-portrait) {
-		margin-right: $vertical-header-width;
+	@include from-width($breakpoint-tablet-portrait) {
+		margin-right: $width-vertical-header;
 	}
 
-	@include from-width($tablet-landscape) {
+	@include from-width($breakpoint-tablet-landscape) {
 		padding-left: 8%;
 	}
+}
 
-	p {
+	.main-footer__content {
 		font-size: 0.85em;
 		line-height: 1.35em;
 	}
-}

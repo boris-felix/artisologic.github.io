@@ -4,10 +4,10 @@
  *
  * Basic opinionated responsive breakpoints.
  */
-$mobile-portrait: 320px;
-$mobile-landscape: 480px;
-$tablet-portrait: 768px;
-$tablet-landscape: 1024px;
+$breakpoint-mobile-portrait: 320px;
+$breakpoint-mobile-landscape: 480px;
+$breakpoint-tablet-portrait: 768px;
+$breakpoint-tablet-landscape: 1024px;
 
 
 /**
@@ -15,8 +15,20 @@ $tablet-landscape: 1024px;
  *
  * Color variables.
  */
-$main-color: #1abc9c;
-$shadow-color: rgba(darken($main-color, 40%), 0.25);
+$color-main: #1abc9c;
+$color-shadow: rgba(darken($color-main, 40%), 0.25);
+
+
+/**
+ * Easing curves
+ *
+ * Cubic bezier animation easing curves.
+ */
+$ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+$ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
+$ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
+$ease-in-out-expo:  cubic-bezier(1, 0, 0, 1);
+$ease-out-expo:     cubic-bezier(0.19, 1, 0.22, 1);
 
 
 /**
@@ -24,4 +36,10 @@ $shadow-color: rgba(darken($main-color, 40%), 0.25);
  *
  * A few size variables.
  */
-$vertical-header-width: 40%;
+$width-vertical-header: 40%;
+$width-photo: 150px;
+$height-photo: $width-photo;
+$width-photo-indicator: 12px;
+$height-photo-indicator: 6px;
+$width-section-indicator: 20px;
+$height-section-indicator: 6px;
