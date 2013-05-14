@@ -36,7 +36,7 @@ a {
 		background: $color-main;
 	}
 
-	@include up-to-width($breakpoint-tablet-portrait) {
+	@include up-to-width($breakpoint-tablet-portrait - 1px) {
 		@include tooltipIndicatorAtBottom($width-section-indicator, $height-section-indicator, lighten($color-main, 3%), after);
 	}
 
