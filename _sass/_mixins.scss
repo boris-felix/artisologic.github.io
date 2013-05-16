@@ -67,19 +67,31 @@ $default-prefixes: webkit moz ms o;
  * Triangle
  *
  * Creates any type of triangle.
+ * @param {CSS dimension}  $width      The width of the triangle
+ * @param {CSS dimension}  $height     The height of the triangle
+ * @param {String}         $direction  The direction of the triangle
+ * @param {CSS color}      $color      The color of the triangle
  */
 @mixin triangle($width, $height: $width, $direction: up, $color: red) {
 	width: 0;
 	height: 0;
-	border-left: $width/2 solid transparent;
-	border-right: $width/2 solid transparent;
+
+	@if($direction == up or $direction == down) {
+		border-left: $width/2 solid transparent;
+		border-right: $width/2 solid transparent;
+	}
+
+	@if($direction == left or $direction == right) {
+		border-top: $width/2 solid transparent;
+		border-bottom: $width/2 solid transparent;
+	}
 
 	$side: "";
-	@if($direction == up) {
-		$side: bottom;
-	} @else if($direction == down) {
-		$side: top;
-	}
+	@if($direction == up) { $side: bottom; }
+	@else if($direction == down) { $side: top; }
+	@else if($direction == left) { $side: right; }
+	@else if($direction == right) { $side: left; }
+
 	border-#{$side}: $height solid $color;
 }
 
