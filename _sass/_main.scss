@@ -37,7 +37,7 @@ a {
 	}
 
 	@include up-to-width($breakpoint-tablet-portrait - 1px) {
-		@include tooltipIndicatorAtBottom($width-indicator, $height-indicator, lighten($color-main, 3%), after);
+		@include tooltip-indicator-bottom($width-indicator, $height-indicator, lighten($color-main, 3%), after);
 	}
 
 	@include from-width($breakpoint-tablet-portrait) {
@@ -84,15 +84,23 @@ a {
 		text-indent: -9999px;
 
 		// Add the indicator at the bottom (with shadow)
-		@include tooltipIndicatorAtBottom($width-indicator, $height-indicator, $color-shadow) {
-			bottom: -7px;
-		}
-		@include tooltipIndicatorAtBottom($width-indicator, $height-indicator, #fff, after) {
-			bottom: -3px;
+		@include up-to-width($breakpoint-mobile-landscape - 1px) {
+			@include tooltip-indicator-bottom($width-indicator, $height-indicator, $color-shadow) { bottom: -7px; }
+			@include tooltip-indicator-bottom($width-indicator, $height-indicator, #fff, after) { bottom: -4px; }
 		}
 
 		@include between-widths($breakpoint-mobile-landscape, $breakpoint-tablet-portrait - 1px) {
 			float: left;
+
+			// Add the indicator on the right (with shadow)
+			@include tooltip-indicator-right($width-indicator, $height-indicator, $color-shadow) { right: -4px; margin-top: -4px; }
+			@include tooltip-indicator-right($width-indicator, $height-indicator, #fff, after) { right: -4px; }
+		}
+
+		// Add the indicator at the bottom (with shadow)
+		@include from-width($breakpoint-tablet-portrait) {
+			@include tooltip-indicator-bottom($width-indicator, $height-indicator, $color-shadow) { bottom: -7px; }
+			@include tooltip-indicator-bottom($width-indicator, $height-indicator, #fff, after) { bottom: -4px; }
 		}
 	}
 
@@ -236,7 +244,7 @@ a {
 	color: $color-main;
 
 	@include up-to-width($breakpoint-tablet-portrait - 1px) {
-		@include activeIndicatorAtTop($width-indicator, $height-indicator, #fff);
+		@include active-indicator-top($width-indicator, $height-indicator, #fff);
 	}
 
 	@include from-width($breakpoint-tablet-portrait) {

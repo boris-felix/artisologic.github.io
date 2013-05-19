@@ -9,6 +9,18 @@ $breakpoint-mobile-landscape: 480px;
 $breakpoint-tablet-portrait: 768px;
 $breakpoint-tablet-landscape: 1024px;
 
+/**
+ * Breakpoints naming ideas:
+ *
+ * T-shirt sizes: XXS, XS, S, M, L, XL, XXL
+ *
+ * Human ergonomics: wrist, palm, lap, desk, wall
+ *
+ * Css Wizardry: 	──palm─┤ ├──lap──┤ ├─desk────────────
+					─portable────────┤        ├─desk-wide
+							 ├──lap-and-up───────────────
+ */
+
 
 /**
  * Colors

@@ -4,17 +4,15 @@
  *
  * Creates a cross browser version of any property/value.
  */
-$default-prefixes: webkit moz ms o;
-@mixin prefixr($property, $value, $prefixes: $default-prefixes) {
+@mixin prefixr($property, $value, $prefixes: webkit moz ms o) {
 	@each $prefix in $prefixes {
 		-#{$prefix}-#{$property}: #{$value};
 	}
 	#{$property}: #{$value};
 }
 
-
 /**
- * UpToWidth
+ * Up To Width (Until)
  *
  * Simple media query for max-width.
  */
@@ -24,9 +22,8 @@ $default-prefixes: webkit moz ms o;
 	}
 }
 
-
 /**
- * UpToWidth
+ * From Width (At least)
  *
  * Simple media query for min-width.
  */
@@ -36,9 +33,8 @@ $default-prefixes: webkit moz ms o;
 	}
 }
 
-
 /**
- * BetweenWidths
+ * Between Widths
  *
  * Simple media query for min/max-width combination.
  */
@@ -47,7 +43,6 @@ $default-prefixes: webkit moz ms o;
 		@content;
 	}
 }
-
 
 /**
  * Retina
@@ -62,70 +57,81 @@ $default-prefixes: webkit moz ms o;
 	}
 }
 
-
 /**
  * Triangle
  *
  * Creates any type of triangle.
+ *
  * @param {CSS dimension}  $width      The width of the triangle
- * @param {CSS dimension}  $height     The height of the triangle
- * @param {String}         $direction  The direction of the triangle
- * @param {CSS color}      $color      The color of the triangle
+ * @param {CSS dimension}  $height     The height of the triangle (defaults to width)
+ * @param {String}         $direction  The direction of the triangle (up/right/down/left)
+ * @param {CSS color}      $color      The color of the triangle (defaults to red)
  */
 @mixin triangle($width, $height: $width, $direction: up, $color: red) {
+
+	$sides: top right bottom left;
+	$opposite-directions: down left up right;
+
+	$base-side: nth($sides, index($opposite-directions, $direction));
+
+	$complement-sides: "";
+	@if($base-side == top or $base-side == bottom) {
+		$complement-sides: left right;
+	}
+	@if($base-side == left or $base-side == right) {
+		$complement-sides: top bottom;
+	}
+
 	width: 0;
 	height: 0;
 
-	@if($direction == up or $direction == down) {
-		border-left: $width/2 solid transparent;
-		border-right: $width/2 solid transparent;
+	border-#{$base-side}: $height solid $color;
+	@each $side in $complement-sides {
+		border-#{$side}: $width/2 solid transparent;
 	}
-
-	@if($direction == left or $direction == right) {
-		border-top: $width/2 solid transparent;
-		border-bottom: $width/2 solid transparent;
-	}
-
-	$side: "";
-	@if($direction == up) { $side: bottom; }
-	@else if($direction == down) { $side: top; }
-	@else if($direction == left) { $side: right; }
-	@else if($direction == right) { $side: left; }
-
-	border-#{$side}: $height solid $color;
 }
-
 
 /**
  * Indicator
  *
  * Uses the triangle mixin in a pseudo element.
  * Creates an indicator (active indicators, tooltip indicators, etc)
+ *
+ * @param {CSS dimension}  $width      The width of the indicator
+ * @param {CSS dimension}  $height     The height of the indicator (defaults to width)
+ * @param {String}         $position   The position of the indicator (inside/outside)
+ * @param {String}         $side       The side of the indicator (top/right/bottom/left)
+ * @param {CSS color}      $color      The color of the indicator (defaults to red)
+ * @param {String}         $pseudo     The pseudo element created (before/after, defaults to before)
+ *
+ * Also passes the context of the mixin to the pseudo element.
  */
-@mixin indicator($width, $height: $width, $position: inside, $side: bottom, $color: red, $pseudo: before) {
+@mixin indicator($width, $height: $width, $position: outside, $side: top, $color: red, $pseudo: before) {
+
+	$sides: top right bottom left;
+	$centered-sides: left top left top;
+	$directions: up right down left;
+	$opposite-directions: down left up right;
+	$direction: up;
+
+	@if($position == outside) {
+		$direction: nth($directions, index($sides, $side));
+	}
+	@else if($position == inside) {
+		$direction: nth($opposite-directions, index($sides, $side));
+	}
+
 	position: relative;
 
 	&::#{$pseudo} {
 		content: "";
 
-		@if($position == inside) {
-			@if($side == top) {
-				@include triangle($width, $height, down, $color);
-			} @else if($side == bottom) {
-				@include triangle($width, $height, up, $color);
-			}
-		} @else if($position == outside) {
-			@if($side == top) {
-				@include triangle($width, $height, up, $color);
-			} @else if($side == bottom) {
-				@include triangle($width, $height, down, $color);
-			}
-		}
+		@include triangle($width, $height, $direction, $color);
 
 		position: absolute;
 		#{$side}: 0;
-		left: 50%;
-		margin-left: -$width/2;
+		#{nth($centered-sides, index($sides, $side))}: 50%;
+		margin-#{nth($centered-sides, index($sides, $side))}: -$width/2;
 
 		@if($position == outside) {
 			margin-#{$side}: -$height;
@@ -134,19 +140,147 @@ $default-prefixes: webkit moz ms o;
 		@content;
 	}
 }
-@mixin activeIndicatorAtBottom($width, $height: $width, $color: red, $pseudo: before) {
-	@include indicator($width, $height, inside, bottom, $color, $pseudo);
+
+/**
+ * Tooltip Indicator Top
+ *
+ * Uses the indicator mixin.
+ * Creates an indicator at the top, outside the element it is applied to.
+ *
+ * @param {CSS dimension}  $width      The width of the indicator
+ * @param {CSS dimension}  $height     The height of the indicator (defaults to width)
+ * @param {CSS color}      $color      The color of the indicator (defaults to red)
+ * @param {String}         $pseudo     The pseudo element created (before/after, defaults to before)
+ *
+ * Also passes the context of the mixin to the pseudo element.
+ */
+@mixin tooltip-indicator-top($width, $height: $width, $color: red, $pseudo: before) {
+	@include indicator($width, $height, outside, top, $color, $pseudo);
 	&::#{$pseudo} { @content; }
 }
-@mixin activeIndicatorAtTop($width, $height: $width, $color: red, $pseudo: before) {
-	@include indicator($width, $height, inside, top, $color, $pseudo);
+
+/**
+ * Tooltip Indicator Right
+ *
+ * Uses the indicator mixin.
+ * Creates an indicator on the right, outside the element it is applied to.
+ *
+ * @param {CSS dimension}  $width      The width of the indicator
+ * @param {CSS dimension}  $height     The height of the indicator (defaults to width)
+ * @param {CSS color}      $color      The color of the indicator (defaults to red)
+ * @param {String}         $pseudo     The pseudo element created (before/after, defaults to before)
+ *
+ * Also passes the context of the mixin to the pseudo element.
+ */
+@mixin tooltip-indicator-right($width, $height: $width, $color: red, $pseudo: before) {
+	@include indicator($width, $height, outside, right, $color, $pseudo);
 	&::#{$pseudo} { @content; }
 }
-@mixin tooltipIndicatorAtBottom($width, $height: $width, $color: red, $pseudo: before) {
+
+/**
+ * Tooltip Indicator Bottom
+ *
+ * Uses the indicator mixin.
+ * Creates an indicator at the bottom, outside the element it is applied to.
+ *
+ * @param {CSS dimension}  $width      The width of the indicator
+ * @param {CSS dimension}  $height     The height of the indicator (defaults to width)
+ * @param {CSS color}      $color      The color of the indicator (defaults to red)
+ * @param {String}         $pseudo     The pseudo element created (before/after, defaults to before)
+ *
+ * Also passes the context of the mixin to the pseudo element.
+ */
+@mixin tooltip-indicator-bottom($width, $height: $width, $color: red, $pseudo: before) {
 	@include indicator($width, $height, outside, bottom, $color, $pseudo);
 	&::#{$pseudo} { @content; }
 }
-@mixin tooltipIndicatorAtTop($width, $height: $width, $color: red, $pseudo: before) {
-	@include indicator($width, $height, outside, top, $color, $pseudo);
+
+/**
+ * Tooltip Indicator Left
+ *
+ * Uses the indicator mixin.
+ * Creates an indicator on the left, outside the element it is applied to.
+ *
+ * @param {CSS dimension}  $width      The width of the indicator
+ * @param {CSS dimension}  $height     The height of the indicator (defaults to width)
+ * @param {CSS color}      $color      The color of the indicator (defaults to red)
+ * @param {String}         $pseudo     The pseudo element created (before/after, defaults to before)
+ *
+ * Also passes the context of the mixin to the pseudo element.
+ */
+@mixin tooltip-indicator-left($width, $height: $width, $color: red, $pseudo: before) {
+	@include indicator($width, $height, outside, left, $color, $pseudo);
+	&::#{$pseudo} { @content; }
+}
+
+/**
+ * Active Indicator Top
+ *
+ * Uses the indicator mixin.
+ * Creates an indicator at the top, inside the element it is applied to.
+ *
+ * @param {CSS dimension}  $width      The width of the indicator
+ * @param {CSS dimension}  $height     The height of the indicator (defaults to width)
+ * @param {CSS color}      $color      The color of the indicator (defaults to red)
+ * @param {String}         $pseudo     The pseudo element created (before/after, defaults to before)
+ *
+ * Also passes the context of the mixin to the pseudo element.
+ */
+@mixin active-indicator-top($width, $height: $width, $color: red, $pseudo: before) {
+	@include indicator($width, $height, inside, top, $color, $pseudo);
+	&::#{$pseudo} { @content; }
+}
+
+/**
+ * Active Indicator Right
+ *
+ * Uses the indicator mixin.
+ * Creates an indicator on the right, inside the element it is applied to.
+ *
+ * @param {CSS dimension}  $width      The width of the indicator
+ * @param {CSS dimension}  $height     The height of the indicator (defaults to width)
+ * @param {CSS color}      $color      The color of the indicator (defaults to red)
+ * @param {String}         $pseudo     The pseudo element created (before/after, defaults to before)
+ *
+ * Also passes the context of the mixin to the pseudo element.
+ */
+@mixin active-indicator-right($width, $height: $width, $color: red, $pseudo: before) {
+	@include indicator($width, $height, inside, right, $color, $pseudo);
+	&::#{$pseudo} { @content; }
+}
+
+/**
+ * Active Indicator Bottom
+ *
+ * Uses the indicator mixin.
+ * Creates an indicator at the bottom, inside the element it is applied to.
+ *
+ * @param {CSS dimension}  $width      The width of the indicator
+ * @param {CSS dimension}  $height     The height of the indicator (defaults to width)
+ * @param {CSS color}      $color      The color of the indicator (defaults to red)
+ * @param {String}         $pseudo     The pseudo element created (before/after, defaults to before)
+ *
+ * Also passes the context of the mixin to the pseudo element.
+ */
+@mixin active-indicator-bottom($width, $height: $width, $color: red, $pseudo: before) {
+	@include indicator($width, $height, inside, bottom, $color, $pseudo);
+	&::#{$pseudo} { @content; }
+}
+
+/**
+ * Active Indicator Top
+ *
+ * Uses the indicator mixin.
+ * Creates an indicator on the left, inside the element it is applied to.
+ *
+ * @param {CSS dimension}  $width      The width of the indicator
+ * @param {CSS dimension}  $height     The height of the indicator (defaults to width)
+ * @param {CSS color}      $color      The color of the indicator (defaults to red)
+ * @param {String}         $pseudo     The pseudo element created (before/after, defaults to before)
+ *
+ * Also passes the context of the mixin to the pseudo element.
+ */
+@mixin active-indicator-left($width, $height: $width, $color: red, $pseudo: before) {
+	@include indicator($width, $height, inside, left, $color, $pseudo);
 	&::#{$pseudo} { @content; }
 }
